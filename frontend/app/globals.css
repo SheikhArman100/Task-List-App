@@ -5,10 +5,10 @@
 @layer base {
   /* global reset values */
   * {
-    @apply m-0 box-border p-0 ;
+    @apply m-0 box-border p-0;
   }
   html {
-    @apply overflow-x-hidden  focus-within:scroll-smooth bg-customBlack ;
+    @apply overflow-x-hidden  focus-within:scroll-smooth bg-customBlack;
   }
 
   /* avoid vw or screen to reduce overflow */
@@ -37,4 +37,11 @@
 @layer components {
   /* reuseable components */
 }
-@layer utilities {}
+@layer utilities {
+  .glassEffect {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(4.4px);
+  }
+}

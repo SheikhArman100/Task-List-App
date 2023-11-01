@@ -1,19 +1,45 @@
+"use client";
+import { signinSchema } from "@/libs/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 const FormSignin = () => {
+  //react-hook-form validation
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signinSchema),
+  });
+
+  //signin control
+  const handleSignin = (data) => {
+    console.log(data)
+  };
   return (
     <section className="flex flex-col gap-y-8">
-      <form className="flex flex-col items-center gap-y-1">
+      <form
+        className="flex flex-col items-center gap-y-1"
+        onSubmit={handleSubmit(handleSignin)}
+      >
         <div className="form-control w-full max-w-[20rem]">
           <label className="label">
             <span className="label-text">Email</span>
           </label>
           <input
             type="email"
+            {...register("email")}
             placeholder="Enter your email"
             className="input input-bordered w-full bg-transparent border border-white"
           />
-          <p className="text-red-500 text-sm mt-1">*show error here</p>
+          {errors.email?.message && (
+            <p className="text-xs font-semibold text-red-700 mt-1">
+              *{errors.email?.message}
+            </p>
+          )}
         </div>
         <div className="form-control w-full max-w-[20rem]">
           <label className="label">
@@ -21,10 +47,15 @@ const FormSignin = () => {
           </label>
           <input
             type="password"
+            {...register("password")}
             placeholder="Enter you password"
             className="input input-bordered w-full bg-transparent border border-white"
           />
-          <p className="text-red-500 text-sm mt-1">*show error here</p>
+          {errors.password?.message && (
+            <p className="text-xs font-semibold text-red-700 mt-1">
+              *{errors.password?.message}
+            </p>
+          )}
         </div>
         <button className="w-full max-w-[20rem] bg-customOrange py-3 rounded-lg text-base font-semibold mt-4">
           Sign in

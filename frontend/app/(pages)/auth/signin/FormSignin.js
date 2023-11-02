@@ -17,7 +17,7 @@ const FormSignin = () => {
 
   //signin control
   const handleSignin = (data) => {
-    console.log(data)
+    console.log(data);
   };
   return (
     <section className="flex flex-col gap-y-8">
@@ -69,7 +69,7 @@ const FormSignin = () => {
         </p>
         <p className="text-xs text-gray-300">
           Already have an account ?{" "}
-          <Link href="/signup" className="underline font-medium">
+          <Link href="signup" className="underline font-medium">
             Signup
           </Link>
         </p>

@@ -6,8 +6,7 @@ export default function PagesLayout({ children }) {
   return (
     <section className="h-screen w-full flex flex-col">
       <Navbar />
-      <AddTask />
-      <div className="flex-[1_1_100%] flex">
+      <div className="flex-[1_1_100%] flex justify-between ">
         <Sidebar />
         {children}
       </div>

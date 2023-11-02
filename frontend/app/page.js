@@ -22,7 +22,7 @@ export default function Home() {
             height="60"
             viewBox="0 0 24 24"
             fill="hsl(5,77%,55%)"
-            stroke-width="2"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
             className="lucide lucide-calendar-check"

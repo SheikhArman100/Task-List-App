@@ -11,7 +11,7 @@ const Drawer = () => {
           <Menu size={28} />
         </label>
       </div>
-      <div className="drawer-side pt-16 md:pt-12">
+      <div className="drawer-side pt-[3.5rem] md:pt-12">
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"

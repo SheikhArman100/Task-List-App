@@ -7,7 +7,8 @@ const mongoose=require("mongoose")
 
 
 //import  routers
-// const authRouter = require("./routes/auth.route");
+const authRouter = require("./routes/auth.route");
+const logger = require("./utils/logger");
 
 //code
 const app = express();
@@ -16,9 +17,9 @@ const app = express();
 //connect to mongoDb database
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB is connected Successfully !"))
+  .then(() => logger.info("MongoDB is connected Successfully !"))
   .catch((err) => {
-    console.log(err.message);
+    logger.error(err.message);
   });
 
 //middleware for cookies
@@ -37,8 +38,8 @@ app.use(
 );
 
 //routes
-// app.use("/api/v1.0.0/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 //start the express server
 const PORT = process.env.PORT || 3501;
-app.listen(PORT, () => console.log(`Express Server running on port ${PORT}`));
+app.listen(PORT, () => logger.info(`Express Server running on port ${PORT}`));

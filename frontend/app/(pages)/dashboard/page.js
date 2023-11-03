@@ -1,4 +1,5 @@
 import AddTask from "@/components/AddTask";
+import Task from "@/components/Task";
 import { MessageSquarePlus, MoreVertical, Plus, UserPlus } from "lucide-react";
 
 const Dashboard = () => {
@@ -11,13 +12,15 @@ const Dashboard = () => {
             Add a Task
             <Plus size={28} />
           </button> */}
-          <AddTask/>
+          <AddTask />
           <UserPlus size={24} className="stroke-gray-400" />
           <MessageSquarePlus size={24} className="stroke-gray-400" />
           <MoreVertical size={24} className="stroke-gray-400" />
         </div>
       </section>
-      <section></section>
+      <section className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ">
+        <Task/>
+      </section>
     </article>
   );
 };

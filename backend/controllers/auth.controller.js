@@ -117,7 +117,6 @@ const handleSignin = async (req, res) => {
     //? return accessToken in res
     return res.status(200).json({
       accessToken: accessToken,
-      status: "success",
       message: "Logged in  successfully",
     });
   } catch (error) {
@@ -128,5 +127,82 @@ const handleSignin = async (req, res) => {
     });
   }
 };
+const handleSignout = async (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.TaskListJwt)
+    return res.status(401).json({
+      message: "No refresh token found",
+    });
+  const refreshToken = cookies.TaskListJwt;
 
-module.exports = { handleRegister, handleSignin };
+  //?Is refreshToken in db?
+  const findUser = await User.findOne({
+    refreshToken: refreshToken,
+  });
+  //? if refreshToken found in cookies but not in database.Could be hacker leaked a rt from cookie
+  if (!findUser) {
+    res.clearCookie("TaskListJwt", {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+    });
+    return res.status(403).json({
+      message: "Not Authorized",
+    });
+  }
+
+  //?remove refresh token from db and delete it from cookie
+  await User.findOneAndUpdate(
+    { refreshToken: refreshToken },
+    { refreshToken: "" }
+  );
+  res.clearCookie("TaskListJwt", {
+    httpOnly: true,
+    sameSite: "None",
+    secure: true,
+  });
+
+  return res.status(200).json({
+    message: "Signed out successfully",
+  });
+};
+const handleUpdateAT=async(req,res)=>{
+  const cookies = req.cookies;
+  if (!cookies?.TaskListJwt)
+    return res.status(401).json({
+      message: "No refresh token found",
+    });
+  const refreshToken = cookies.TaskListJwt;
+
+  //?Is refreshToken in db?
+  const findUser = await User.findOne({
+    refreshToken: refreshToken,
+  });
+  //? if refreshToken found in cookies but not in database.Could be hacker leaked a rt from cookie
+  if (!findUser) {
+    return res.status(403).json({
+      message: "Not Authorized",
+    });
+  }
+  //?verify jwt
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    if (err || findUser.id !== decoded.id)
+      return res.status(403).json({
+        message: "Invalid access token",
+      });
+    const accessToken = jwt.sign(
+      {
+        id: decoded.id,
+        email: decoded.email,
+        role: decoded.role,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "60s" }
+    );
+    return res.status(200).json({
+      accessToken: accessToken,
+      message: "Access token updated successfully",
+    });
+  });
+}
+module.exports = { handleRegister, handleSignin, handleSignout,handleUpdateAT };

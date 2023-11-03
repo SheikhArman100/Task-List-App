@@ -1,5 +1,5 @@
 const express = require("express");
-const {  handleSignin, handleRegister } = require("../controllers/auth.controller");
+const {  handleSignin, handleRegister, handleSignout, handleUpdateAT } = require("../controllers/auth.controller");
 
 const router = express.Router();
 
@@ -9,10 +9,10 @@ router.post("/register", handleRegister);
 //sign in
 router.post("/signin", handleSignin);
 
-// //sign out
-// router.get("/signout", handleSignout);
+//sign out
+router.get("/signout", handleSignout);
 
-// //update Access token
-// router.get("/updateAT", updateAccessToken);
+//update Access token
+router.get("/updateAT", handleUpdateAT);
 
 module.exports = router;

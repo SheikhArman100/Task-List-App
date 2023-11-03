@@ -1,13 +1,13 @@
 const express = require("express");
-const { registerUser } = require("../controllers/auth.controller");
+const {  handleSignin, handleRegister } = require("../controllers/auth.controller");
 
 const router = express.Router();
 
 //register new user after verification
-router.post("/register", registerUser);
+router.post("/register", handleRegister);
 
-// //sign in
-// router.get("/signin", handleSignin);
+//sign in
+router.post("/signin", handleSignin);
 
 // //sign out
 // router.get("/signout", handleSignout);

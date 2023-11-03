@@ -1,9 +1,10 @@
 const User = require("../models/user.model");
 const logger = require("../utils/logger");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //register new user
-const registerUser = async (req,res) => {
+const handleRegister = async (req, res) => {
   try {
     const { username, email, password, image } = req.body;
     if (!username || !email || !image || !password) {
@@ -52,4 +53,80 @@ const registerUser = async (req,res) => {
     });
   }
 };
-module.exports = { registerUser };
+
+//sign in
+const handleSignin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Invalid or incomplete user data",
+      });
+    }
+
+    //?find the user in db using email
+    const findUser = await User.findOne({
+      email: email,
+    });
+    if (!findUser)
+      return res.status(401).json({
+        message: "Email or Password doesn't match with any account",
+      }); //Unauthorized
+
+    //? evaluate and compare password
+    const matchPassword = await bcrypt.compare(password, findUser.password);
+    if (!matchPassword) {
+      return res.status(401).json({
+        message: "Email or Password doesn't match with any account",
+      }); //Unauthorized
+    }
+
+    //?creating accessToken and refreshToken
+    const accessToken = jwt.sign(
+      {
+        id: findUser.id,
+        email: findUser.email,
+        role: findUser.role,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "60s" }
+    );
+    const refreshToken = jwt.sign(
+      {
+        id: findUser.id,
+        email: findUser.email,
+        role: findUser.role,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "180s" }
+    );
+
+    //?Update the user in the database with the refresh token.
+    await User.findByIdAndUpdate(findUser.id, {
+      refreshToken: refreshToken,
+    });
+
+    //? Creates Secure Cookie with refresh token
+    res.cookie("TaskListJwt", refreshToken, {
+      httpOnly: true,
+      sameSite: "None",
+      secure: true,
+      maxAge: 3 * 60 * 1000, //3min
+    });
+
+    //? return accessToken in res
+    return res.status(200).json({
+      accessToken: accessToken,
+      status: "success",
+      message: "Logged in  successfully",
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      message: "Something went wrong while sign in",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { handleRegister, handleSignin };

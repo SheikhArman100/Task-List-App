@@ -47,8 +47,8 @@ const FormSignup = () => {
   });
 
   //sign up button form control
-  const handleSignup = async(data) => {
-    await registerMutation.mutate({
+  const handleSignup = (data) => {
+    registerMutation.mutate({
       username: data.username,
       email: data.email,
       password: data.password,
@@ -57,7 +57,7 @@ const FormSignup = () => {
     });
 
     //automatically signin
-    await signinMutation.mutate({
+    signinMutation.mutate({
       email: data.email,
       password: data.password,
     });

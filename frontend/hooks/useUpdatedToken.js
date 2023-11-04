@@ -1,11 +1,21 @@
-// import { useAuthStore } from '@/store/authStore'
-// import React from 'react'
+"use client";
+import { useAuthStore } from "@/store/authStore";
+import { handleUpdateAT } from "@/utils/apiFuntion";
+import { useQuery } from "@tanstack/react-query";
 
-// const useUpdatedToken = () => {
-//   const setAccessToken=useAuthStore
-//   return (
-    
-//   )
-// }
+const useUpdatedToken = () => {
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const updateToken = async () => {
+    const { data } = useQuery({
+      queryKey: ["updateAT"],
+      queryFn: () => handleUpdateAT(),
+    });
+    console.log("AT=>",data.accessToken)
+    setAccessToken(data.accessToken);
 
-// export default useUpdatedToken
+    return data.accessToken;
+  };
+  return updateToken
+};
+
+export default useUpdatedToken;

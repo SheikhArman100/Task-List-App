@@ -5,7 +5,7 @@ const Task = () => {
         type="checkbox"
         name="radio-10"
         className="checkbox checkbox-accent"
-        checked
+        
       />
       <div className="flex flex-col gap-y-2">
         <div>

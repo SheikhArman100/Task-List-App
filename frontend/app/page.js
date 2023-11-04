@@ -10,7 +10,7 @@ export default function Home() {
     setTimeout(() => {
       // Navigate to the other page
       router.push("dashboard");
-    }, 5000);
+    }, 1000);
   }, []);
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center">

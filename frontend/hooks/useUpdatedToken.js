@@ -10,7 +10,7 @@ const useUpdatedToken = () => {
       queryKey: ["updateAT"],
       queryFn: () => handleUpdateAT(),
     });
-    console.log("AT=>",data.accessToken)
+    
     setAccessToken(data.accessToken);
 
     return data.accessToken;

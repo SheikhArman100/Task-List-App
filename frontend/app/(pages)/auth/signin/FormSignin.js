@@ -1,10 +1,18 @@
 "use client";
 import { signinSchema } from "@/libs/zodSchema";
+import { useAuthStore } from "@/store/authStore";
+import { signinUser } from "@/utils/apiFuntion";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const FormSignin = () => {
+  const router = useRouter();
+  const setAccessToken =useAuthStore((state) => state.setAccessToken);
+  
   //react-hook-form validation
   const {
     register,
@@ -15,9 +23,25 @@ const FormSignin = () => {
     resolver: zodResolver(signinSchema),
   });
 
+  //sign in mutation
+  const signinMutation = useMutation({
+    mutationFn: signinUser,
+    onError: (data) => {
+      toast.error(data.response.data.message);
+    },
+    onSuccess: async (data) => {
+      setAccessToken(data.accessToken)
+      router.push("/dashboard");
+      toast.success(data.message);
+    },
+  });
+
   //signin control
   const handleSignin = (data) => {
-    console.log(data);
+    signinMutation.mutate({
+      email: data.email,
+      password: data.password,
+    });
   };
   return (
     <section className="flex flex-col gap-y-8">

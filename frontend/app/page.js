@@ -9,8 +9,8 @@ export default function Home() {
     // Wait for 3 seconds
     setTimeout(() => {
       // Navigate to the other page
-      router.push("auth/signin");
-    }, 3000);
+      router.push("dashboard");
+    }, 5000);
   }, []);
   return (
     <main className="w-full h-screen flex flex-col items-center justify-center">

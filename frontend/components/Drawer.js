@@ -11,13 +11,13 @@ const Drawer = () => {
           <Menu size={28} />
         </label>
       </div>
-      <div className="drawer-side pt-[3.5rem] md:pt-12">
+      <div className="drawer-side pt-[3.5rem] md:pt-12 z-[2]">
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <aside className="menu w-60 min-h-full bg-customGray px-4 py-16">
+        <aside className="menu w-60 min-h-full bg-customGray px-4 py-16 ">
           <ul className="w-full flex flex-col gap-y-3">
             {/* Sidebar content here */}
             {sidebarItems.map((item, index) => (

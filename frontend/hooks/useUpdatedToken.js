@@ -1,21 +1,18 @@
 "use client";
+import { axiosPublic } from "@/libs/axios/axiosConfig";
 import { useAuthStore } from "@/store/authStore";
-import { handleUpdateAT } from "@/utils/apiFuntion";
-import { useQuery } from "@tanstack/react-query";
 
 const useUpdatedToken = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const updateToken = async () => {
-    const { data } = useQuery({
-      queryKey: ["updateAT"],
-      queryFn: () => handleUpdateAT(),
-    });
-    
-    setAccessToken(data.accessToken);
 
-    return data.accessToken;
+  const update = async () => {
+    const response = await axiosPublic.get("/auth/updateAT", {
+      withCredentials: true,
+    });
+    setAccessToken(response.data.accessToken);
+    return response.data.accessToken;
   };
-  return updateToken
+  return update;
 };
 
 export default useUpdatedToken;

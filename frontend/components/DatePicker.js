@@ -1,10 +1,11 @@
+"use client"
 import { format, isAfter, isBefore, isToday } from "date-fns";
 import { CalendarDays } from "lucide-react";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-const DatePicker = () => {
+const DatePicker = ({register}) => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
@@ -52,6 +53,7 @@ const DatePicker = () => {
               selected: { backgroundColor: "hsl(5, 77%, 55%)" },
             }}
             selected={selectedDay}
+            {...register("dueDate")}
             onDayClick={(date) => {
               setSelectedDay(date);
               document.getElementById("my_modal_2").close();
@@ -59,7 +61,10 @@ const DatePicker = () => {
           />
         </div>
         <form method="dialog" className="modal-backdrop">
-          <button onClick={() => document.getElementById("my_modal_2").close()}>
+          <button
+            type="button"
+            onClick={() => document.getElementById("my_modal_2").close()}
+          >
             Close
           </button>
         </form>

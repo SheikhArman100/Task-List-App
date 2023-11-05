@@ -1,5 +1,6 @@
 import { Bell, Search, Star } from "lucide-react";
 import Drawer from "./Drawer";
+import Profile from "./Profile";
 
 const Navbar = () => {
   return (
@@ -36,7 +37,7 @@ const Navbar = () => {
           <Star size={20} className="stroke-none fill-yellow-400" />
           <p className="text-xs font-medium">Upgrade to Pro</p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-gray-400" />
+        <Profile />
         <Bell size={28} />
       </div>
     </nav>

@@ -6,7 +6,7 @@ const statusOptions = [
   { label: "In progress", value: "In progress" },
 ];
 
-const StatusCheck = () => {
+const StatusCheck = ({register}) => {
   const [selectedStatus, setSelectedStatus] = React.useState("");
 
   return (
@@ -54,6 +54,7 @@ const StatusCheck = () => {
                   type="radio"
                   name="status"
                   value={status.value}
+                  {...register("status")}
                   checked={selectedStatus === status.value}
                   onChange={(e) => {
                     setSelectedStatus(e.target.value);

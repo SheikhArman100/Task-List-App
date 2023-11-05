@@ -1,6 +1,8 @@
-const { create } = require("zustand");
+import { create } from "zustand";
+
+
 
 export const useAuthStore = create((set) => ({
   accessToken: null,
-  setAccessToken: (accessToken) => set({ accessToken }),
+  setAccessToken: (accessToken) => set({ accessToken:accessToken }),
 }));

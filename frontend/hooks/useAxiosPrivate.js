@@ -1,21 +1,18 @@
-"use client";
-
 import { useAuthStore } from "@/store/authStore";
 import useUpdatedToken from "./useUpdatedToken";
 import { axiosPrivate } from "@/libs/axios/axiosConfig";
+import { useEffect } from "react";
 
-const useAxiosAuth = () => {
-  const accessToken = useAuthStore((state) => state.accessToken);
 
-  const updateToken=useUpdatedToken()
+const useAxiosPrivate = () => {
+  const update = useUpdatedToken();
+  const accessToken=useAuthStore((state)=>state.accessToken)
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
         return config;
       },
@@ -26,12 +23,10 @@ const useAxiosAuth = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 401 && !prevRequest?.sent) {
+        if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          await updateToken();
-          prevRequest.headers[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
+          const newAccessToken = await update();
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return axiosPrivate(prevRequest);
         }
         return Promise.reject(error);
@@ -42,9 +37,9 @@ const useAxiosAuth = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken, updateToken]);
+  }, [accessToken, update]);
 
   return axiosPrivate;
 };
 
-export default useAxiosAuth;
+export default useAxiosPrivate;

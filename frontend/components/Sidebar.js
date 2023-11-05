@@ -27,7 +27,7 @@ export const sidebarItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="hidden md:flex w-60 h-full bg-customGray px-4 py-16">
+    <aside className="hidden md:flex w-60  bg-customGray px-4 py-16">
       <ul className="w-full flex flex-col gap-y-3">
         {sidebarItems.map((item, index) => (
           <li key={index} className="">

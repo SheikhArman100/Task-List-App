@@ -8,6 +8,7 @@ const mongoose=require("mongoose")
 
 //import  routers
 const authRouter = require("./routes/auth.route");
+const userRouter=require("./routes/user.route")
 const logger = require("./utils/logger");
 
 //code
@@ -39,6 +40,7 @@ app.use(
 
 //routes
 app.use("/api/auth", authRouter);
+app.use("/api/user",userRouter)
 
 //start the express server
 const PORT = process.env.PORT || 3501;

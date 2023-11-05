@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 //verifying accessToken before going to controller
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;

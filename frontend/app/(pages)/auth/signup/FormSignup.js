@@ -1,7 +1,7 @@
 "use client";
 import { signupSchema } from "@/libs/zodSchema";
 import { useAuthStore } from "@/store/authStore";
-import { registerUser, signinUser } from "@/utils/apiFuntion";
+import { registerUser } from "@/utils/apiFuntion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
@@ -28,21 +28,9 @@ const FormSignup = () => {
     onError: (data) => {
       toast.error(data.response.data.message);
     },
-    onSuccess:(data)=>{
-      toast.success(data.message)
-    }
-  });
-
-  //sign in mutation
-  const signinMutation = useMutation({
-    mutationFn: signinUser,
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: async(data) => {
-      setAccessToken(data.accessToken);
-      router.push("/dashboard");
+    onSuccess: (data) => {
       toast.success(data.message);
+      router.push("/auth/signin");
     },
   });
 
@@ -54,12 +42,6 @@ const FormSignup = () => {
       password: data.password,
       image:
         "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww",
-    });
-
-    //automatically signin
-    signinMutation.mutate({
-      email: data.email,
-      password: data.password,
     });
   };
   return (

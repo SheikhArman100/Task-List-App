@@ -9,7 +9,7 @@ export default function Home() {
     // Wait for 3 seconds
     setTimeout(() => {
       // Navigate to the other page
-      router.push("dashboard");
+      router.push("/dashboard");
     }, 1000);
   }, []);
   return (

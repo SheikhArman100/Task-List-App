@@ -10,7 +10,7 @@ router.post("/register", handleRegister);
 router.post("/signin", handleSignin);
 
 //sign out
-router.get("/signout", handleSignout);
+router.post("/signout", handleSignout);
 
 //update Access token
 router.get("/updateAT", handleUpdateAT);

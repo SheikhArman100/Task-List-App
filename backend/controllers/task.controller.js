@@ -36,10 +36,26 @@ const handleCreateTask = async (req, res) => {
 const handleGetTasks = async (req, res) => {
   try {
     const userId = req.id;
+    const { search } = req.query;
+    let tasks;
+    if (!search) {
+      tasks = await Task.find({
+        userId: userId,
+      }).sort({ createdAt: -1 });
+    } else {
+      tasks = await Task.find({
+        userId: userId,
+        $or: [
+          {
+            title: { $regex: new RegExp(search, "i") },
+          },
+          {
+            description: { $regex: new RegExp(search, "i") },
+          },
+        ],
+      }).sort({ createdAt: -1 });
+    }
 
-    const tasks = await Task.find({
-      userId: userId,
-    });
     return res.status(200).json({
       tasks: tasks,
     });
@@ -113,27 +129,32 @@ const handleUpdateImportant = async (req, res) => {
     });
   }
 };
-const handleDeleteTask=async(req,res)=>{
-    try {
-      const userId = req.id;
-      const {id}=req.body
+const handleDeleteTask = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { id } = req.body;
 
-      await Task.findOneAndDelete({
-        _id:id,
-        userId:userId
-      })
-      return res.status(200).json({
-        message:"Task is deleted"
-      });
-    } catch (error) {
-      logger.error(error);
-      return res.status(500).json({
-        error: error.message,
-        message: "Something went wrong",
+    if (!id) {
+      return res.status(400).json({
+        message: "Task id is required",
       });
     }
 
-}
+    await Task.findOneAndDelete({
+      _id: id.id,
+      userId: userId,
+    });
+    return res.status(200).json({
+      message: "Task is deleted",
+    });
+  } catch (error) {
+    logger.error(error);
+    return res.status(500).json({
+      error: error.message,
+      message: "Something went wrong",
+    });
+  }
+};
 module.exports = {
   handleCreateTask,
   handleGetTasks,

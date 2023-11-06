@@ -1,31 +1,31 @@
 "use client";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import { useQuery } from "@tanstack/react-query";
 import Task from "./Task";
+import { useQuery } from "@tanstack/react-query";
 
-const TaskList = ({searchText}) => {
+const CompletedTaskList = () => {
   const axiosPrivate = useAxiosPrivate();
   const { data, isLoading } = useQuery({
-    queryKey: ["tasks",searchText],
+    queryKey: ["tasks"],
     queryFn: async () => {
-      const response = await axiosPrivate.get(`/task?search=${searchText}`, {
+      const response = await axiosPrivate.get("/task", {
         withCredentials: true,
       });
       return response.data;
     },
   });
-  // if (isLoading)
-  //   return (
-  //     <div className="h-screen w-full flex items-center justify-center">
-  //       <span className="loading loading-spinner loading-md"></span>
-  //     </div>
-  //   );
+  if (isLoading)
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <span className="loading loading-spinner loading-md"></span>
+      </div>
+    );
 
-
+  const completedTasks = data?.tasks?.filter((task) => task.isCompleted);
 
   return (
     <section className="py-6 items-center justify-center justify-items-center grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-6   lg:px-[2rem] xl:px-[4rem]">
-      {data?.tasks.map((task) => (
+      {completedTasks.map((task) => (
         <Task
           key={task._id}
           id={task._id}
@@ -41,4 +41,4 @@ const TaskList = ({searchText}) => {
   );
 };
 
-export default TaskList;
+export default CompletedTaskList;

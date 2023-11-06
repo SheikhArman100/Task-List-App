@@ -1,6 +1,8 @@
 import { Menu } from "lucide-react";
 import { sidebarItems } from "./Sidebar";
 import Link from "next/link";
+import ActiveLink from "./ActiveLink";
+import SignoutButton from "./SignoutButton";
 
 const Drawer = () => {
   return (
@@ -11,27 +13,26 @@ const Drawer = () => {
           <Menu size={28} />
         </label>
       </div>
-      <div className="drawer-side pt-[3.5rem] md:pt-12 z-[2]">
+      <div className="drawer-side pt-[4rem] md:pt-12 z-[2]">
         <label
           htmlFor="my-drawer"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <aside className="menu w-60 min-h-full bg-customGray px-4 py-16 ">
+        <aside className="menu w-60 min-h-full flex flex-col items-center justify-between bg-customGray px-4 py-16 ">
           <ul className="w-full flex flex-col gap-y-3">
             {/* Sidebar content here */}
             {sidebarItems.map((item, index) => (
               <li key={index} className="">
-                <Link
+                <ActiveLink
                   href={item.href}
-                  className="flex items-center gap-x-2 p-2 w-full bg-[#393939] rounded-lg text-sm font-medium"
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
+                  label={item.label}
+                  icon={item.icon}
+                />
               </li>
             ))}
           </ul>
+          <SignoutButton/>
         </aside>
       </div>
     </div>

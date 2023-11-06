@@ -1,17 +1,26 @@
+"use client";
 import { Flag } from "lucide-react";
-import React from "react";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 const statusOptions = [
   { label: "Not started", value: "Not started" },
   { label: "In progress", value: "In progress" },
 ];
 
-const StatusCheck = ({register}) => {
-  const [selectedStatus, setSelectedStatus] = React.useState("");
+const StatusCheck = ({ isModalOpen }) => {
+  const {register}=useFormContext()
+  const [selectedStatus, setSelectedStatus] = useState("");
+  useEffect(() => {
+    if (!isModalOpen) {
+      setSelectedStatus("");
+    }
+  }, [isModalOpen]);
 
   return (
     <>
       <button
+        type="button"
         className={`py-2 px-2 md:px-3 border  rounded-lg flex items-center gap-x-1 md:gap-x-1 text-xs md:text-sm text-gray-200 whitespace-nowrap ${
           selectedStatus == "In progress"
             ? "border-blue-500"

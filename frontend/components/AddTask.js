@@ -1,79 +1,124 @@
 "use client";
-import { Plus } from "lucide-react";
-import DatePicker from "./DatePicker";
-import StatusCheck from "./StatusCheck";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { taskSchema } from "@/libs/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import DatePicker from "./DatePicker";
+import StatusCheck from "./StatusCheck";
 
 const AddTask = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const methods = useForm({
+    resolver: zodResolver(taskSchema),
+  });
+
   const {
     register,
     handleSubmit,
     reset,
-    trigger,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(taskSchema),
+
+    formState: { errors, isValid },
+  } = methods;
+
+  //?create task mutation
+  const createTaskMutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await axiosPrivate.post("/task", data, {
+        withCredentials: true,
+      });
+      return response.data;
+    },
+    onError: (data) => {
+      toast.error(data.response.data.message);
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      reset();
+      document.getElementById("addTaskModal").close();
+      setIsModalOpen(false);
+      queryClient.invalidateQueries(["tasks"]);
+    },
   });
 
-  const taskSubmit=(data)=>{
-    console.log(data)
-  }
+  const handleCreateTask = (data) => {
+    createTaskMutation.mutate({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      status: data.status,
+    });
+  };
+
   return (
     <>
       <button
         className="bg-customOrange rounded-full flex items-center justify-center fixed right-4 bottom-5 py-4 px-4 md:relative md:py-2 md:bottom-0 md:right-0 md:gap-x-2"
-        onClick={() => document.getElementById("my_modal_1").showModal()}
+        onClick={() => {
+          document.getElementById("addTaskModal").showModal();
+          setIsModalOpen(true);
+        }}
       >
         <p className="hidden md:block text-sm">Add a task</p>
         <Plus size={32} />
       </button>
-      <dialog id="my_modal_1" className="modal">
-        <form className="modal-box bg-customBlack border border-gray-600 p-0 h-[18rem]  overflow-hidden flex flex-col justify-between">
-          <section className="h-full flex flex-col justify-between gap-y-2 px-4 pt-6 pb-2 ">
-            <div
-              className="w-full h-full flex flex-col gap-y-2"
-              onSubmit={handleSubmit(taskSubmit)}
+      <dialog id="addTaskModal" className="modal opacity-0">
+        <div className="modal-box bg-customBlack h-[18rem] border border-gray-600">
+          <FormProvider {...methods}>
+            <form
+              className="w-full h-full flex flex-col"
+              onSubmit={handleSubmit(handleCreateTask)}
             >
-              <input
-                placeholder="Title name..."
-                {...register("title")}
-                className="w-full bg-transparent overflow-hidden text-base font-semibold"
-              />
-              <textarea
-                rows="4"
-                placeholder="Description..."
-                {...register("description")}
-                className="w-full bg-transparent focus:border-none focus:outline-0 overflow-hidden text-sm "
-              ></textarea>
-            </div>
-            <section className="w-fit flex items-center gap-x-2">
-              <DatePicker register={register} />
-              <StatusCheck register={register} />
-            </section>
-          </section>
-          <section className="w-full flex items-center justify-end gap-x-4 border-t border-gray-700 py-3">
-            <div className="modal-action  m-0 py-2 px-4 rounded-lg bg-customGray">
-              <button
-                type="button"
-                className="text-sm "
-                onClick={() => {
-                  reset();
-                  document.getElementById("my_modal_1").close();
-                }}
-              >
-                Close
-              </button>
-            </div>
-            <button
-              type="submit"
-              className="py-3 px-6 rounded-lg bg-customOrange text-sm mr-2"
-            >
-              Add task
-            </button>
-          </section>
-        </form>
+              <section className="flex-[1_1_100%] flex flex-col ">
+                <div className="flex-[1_1_100%]">
+                  <input
+                    placeholder="Title name..."
+                    {...register("title")}
+                    className="w-full bg-transparent overflow-hidden text-base font-semibold"
+                  />
+                  <textarea
+                    rows="4"
+                    placeholder="Description..."
+                    {...register("description")}
+                    className="w-full bg-transparent focus:border-none focus:outline-0 overflow-hidden text-sm "
+                  ></textarea>
+                </div>
+                <div className="flex gap-x-2 p-2 items-center">
+                  <DatePicker isModalOpen={isModalOpen} />
+                  <StatusCheck isModalOpen={isModalOpen} />
+                </div>
+              </section>
+              <section className="w-full  flex item-center justify-end gap-x-2 pt-2 border-t border-gray-600">
+                <button
+                  type="button"
+                  className="text-sm py-2 px-6 bg-customGray rounded-lg"
+                  onClick={() => {
+                    document.getElementById("addTaskModal").close();
+                    setIsModalOpen(false);
+                    reset();
+                  }}
+                >
+                  Close
+                </button>
+                <button
+                  className="py-3 px-6 rounded-lg bg-customOrange text-sm mr-2 disabled:opacity-50"
+                  disabled={!isValid}
+                >
+                  {createTaskMutation.isPending ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <p>AddTask</p>
+                  )}
+                </button>
+              </section>
+            </form>
+          </FormProvider>
+        </div>
       </dialog>
     </>
   );

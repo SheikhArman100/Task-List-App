@@ -10,7 +10,7 @@ const CookieChecker = ({ children }) => {
 
   useEffect(() => {
     if (!cookies.TaskListJwt) {
-      router.push("auth/signin");
+      router.push("/auth/signin");
     } else {
       setHasCookie(true);
     }

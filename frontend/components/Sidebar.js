@@ -1,46 +1,38 @@
-import { CalendarCheck2, ListStart, ListTodo, Star } from "lucide-react";
-import Link from "next/link";
+import { CalendarCheck2, ListTodo, Star } from "lucide-react";
+import ActiveLink from "./ActiveLink";
+import SignoutButton from "./SignoutButton";
 
 //sidebar items
 export const sidebarItems = [
   {
-    icon: <ListTodo size={20} className="stroke-purple-500"/>,
+    icon: <ListTodo size={20} className="stroke-purple-500" />,
     label: "All Tasks",
-    href: "/all",
+    href: "/dashboard",
   },
   {
-    icon: <CalendarCheck2 size={20} className="stroke-green-500"/>,
+    icon: <CalendarCheck2 size={20} className="stroke-green-500" />,
     label: "Completed Tasks",
-    href: "/completed",
+    href: "/dashboard/completed",
   },
+
   {
-    icon: <ListStart size={20} className="stroke-blue-500"/>,
-    label: "In Progress Tasks",
-    href: "/in_progress",
-  },
-  {
-    icon: <Star size={20} className="stroke-yellow-500"/>,
+    icon: <Star size={20} className="stroke-yellow-500" />,
     label: "Important Tasks",
-    href: "/important",
+    href: "/dashboard/important",
   },
 ];
 
 const Sidebar = () => {
   return (
-    <aside className="hidden md:flex w-60  bg-customGray px-4 py-16">
+    <aside className="hidden md:flex md:flex-col  md:items-center md:justify-between  min-w-[15rem]  bg-customGray px-4 py-16">
       <ul className="w-full flex flex-col gap-y-3">
         {sidebarItems.map((item, index) => (
           <li key={index} className="">
-            <Link
-              href={item.href}
-              className="flex items-center gap-x-2 p-2 w-full bg-[#393939] rounded-lg text-sm font-medium"
-            >
-              {item.icon}
-              {item.label}
-            </Link>
+            <ActiveLink href={item.href} label={item.label} icon={item.icon} />
           </li>
         ))}
       </ul>
+      <SignoutButton/>
     </aside>
   );
 };

@@ -20,3 +20,11 @@ export const handleUpdateAT = async () => {
   });
   return response.data;
 };
+
+export const signoutUser = async () => {
+  const response = await axiosPublic.post("/auth/signout", {
+    withCredentials: true,
+  });
+
+  return response.data;
+};

@@ -25,12 +25,7 @@ const Navbar = () => {
 
           <path stroke="hsl(5,77%,55%)" d="m9 14 2 2 4-4" />
         </svg>
-        <form className="hidden md:flex glassEffect px-2 py-1.5 rounded-lg">
-          <input type="text" className="bg-transparent text-sm" />
-          <button className="">
-            <Search size={24} />
-          </button>
-        </form>
+        
       </div>
       <div className="flex items-center gap-x-4  md:gap-x- ">
         <div className="hidden md:flex items-center py-1.5 px-3 rounded-lg bg-gray-600">

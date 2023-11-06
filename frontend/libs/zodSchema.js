@@ -45,3 +45,8 @@ export const taskSchema = z.object({
   dueDate: z.date(),
   status: z.enum(status),
 });
+
+//search schema
+export const searchSchema = z.object({
+  search: z.string(),
+});

@@ -1,25 +1,36 @@
+"use client";
 import AddTask from "@/components/AddTask";
-import Task from "@/components/Task";
 import TaskList from "@/components/TaskList";
-import { MessageSquarePlus, MoreVertical, Plus, UserPlus } from "lucide-react";
+import useDebounce from "@/hooks/useDebounce";
+import { MoreVertical, Search } from "lucide-react";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [searchText, setSearchText] = useState("");
+  const debouncedValue = useDebounce(searchText, 500);
+
   return (
-    <article className="flex-[1_1_0%] py-6 px-8 lg:px-[2rem] xl:px-[4rem] l">
-      <section className=" flex items-center justify-between">
-        <h3 className="text-2xl font-semibold capitalize">All Tasks</h3>
+    <article className="flex-[1_1_100%] py-6 px-8 lg:px-[2rem] xl:px-[4rem] overflow-y-auto">
+      <section className=" flex flex-col md:flex-row items-center justify-between gap-y-2">
+        <h3 className="text-2xl font-semibold capitalize text-left">
+          All Tasks
+        </h3>
         <div className="flex items-center gap-x-4">
-          {/* <button className="hidden md:flex items-center py-2 px-4 gap-x-2 bg-customOrange rounded-lg text-sm">
-            Add a Task
-            <Plus size={28} />
-          </button> */}
+          <div className="flex glassEffect px-2 py-1.5 rounded-lg">
+            <input
+              type="text"
+              className="bg-transparent text-sm w-full"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+
+            <Search size={24} />
+          </div>
           <AddTask />
-          <UserPlus size={24} className="stroke-gray-400" />
-          <MessageSquarePlus size={24} className="stroke-gray-400" />
           <MoreVertical size={24} className="stroke-gray-400" />
         </div>
       </section>
-      <TaskList/>
+      <TaskList searchText={debouncedValue} />
     </article>
   );
 };

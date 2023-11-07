@@ -9,7 +9,9 @@ export const registerUser = async (data) => {
 
 export const signinUser = async (data) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await axiosPublic.post("/auth/signin", data);
+  const response = await axiosPublic.post("/auth/signin", data,{
+    withCredentials:true
+  });
 
   return response.data;
 };

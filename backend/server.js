@@ -32,10 +32,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false })); //why false?
 
 // Cross Origin Resource Sharing
+const ORIGIN=process.env.ORIGIN
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"], //!write frontend route here
+    origin: [ORIGIN], //!write frontend route here
   })
 );
 
@@ -45,5 +46,5 @@ app.use("/api/user",userRouter)
 app.use("/api/task",taskRoute)
 
 //start the express server
-const PORT = process.env.PORT || 3501;
+const PORT = process.env.PORT 
 app.listen(PORT, () => logger.info(`Express Server running on port ${PORT}`));

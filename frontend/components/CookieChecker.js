@@ -9,7 +9,7 @@ const CookieChecker = ({ children }) => {
   const { isLoading, isFetching, isError, data } = useQuery({
     queryKey: ["check"],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      
       const response = await axiosPublic.get("/auth/updateAT", {
         withCredentials: true,
       });

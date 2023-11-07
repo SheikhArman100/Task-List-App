@@ -145,7 +145,7 @@ __Frontend__
 
 ![Sign in](https://drive.google.com/uc?export=view&id=1hvoI53Tv8fjtcafoiSUxuNocBwFIdUSG)
 
-![My Image](https://drive.google.com/uc?export=view&id=1MCXDh3aBhv_Rb_t1-kmlhfY-AW4sJOt-)
+![dashboard](https://drive.google.com/uc?export=view&id=1MCXDh3aBhv_Rb_t1-kmlhfY-AW4sJOt-)
 
 
 

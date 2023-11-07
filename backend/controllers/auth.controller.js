@@ -108,7 +108,7 @@ const handleSignin = async (req, res) => {
 
     //? Creates Secure Cookie with refresh token
     res.cookie("TaskListJwt", refreshToken, {
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "None",
       secure: true,
       maxAge: 10 * 60 * 1000, //5min
@@ -142,7 +142,7 @@ const handleSignout = async (req, res) => {
   //? if refreshToken found in cookies but not in database.Could be hacker leaked a rt from cookie
   if (!findUser) {
     res.clearCookie("TaskListJwt", {
-      httpOnly: false,
+      httpOnly: true,
       sameSite: "None",
       secure: true,
     });
@@ -157,7 +157,7 @@ const handleSignout = async (req, res) => {
     { refreshToken: "" }
   );
   res.clearCookie("TaskListJwt", {
-    httpOnly: false,
+    httpOnly: true,
     sameSite: "None",
     secure: true,
   });
@@ -188,7 +188,7 @@ const handleUpdateAT = async (req, res) => {
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err || findUser.id !== decoded.id)
       return res.status(403).json({
-        message: "Invalid access token",
+        message: "Invalid refresh token",
       });
     const accessToken = jwt.sign(
       {

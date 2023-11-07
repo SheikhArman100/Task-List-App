@@ -89,7 +89,7 @@ const handleSignin = async (req, res) => {
         role: findUser.role,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "600s" }
+      { expiresIn: "60s" }  //1min
     );
     const refreshToken = jwt.sign(
       {
@@ -98,7 +98,7 @@ const handleSignin = async (req, res) => {
         role: findUser.role,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1800s" }
+      { expiresIn: "300s" }  //5min
     );
 
     //?Update the user in the database with the refresh token.
@@ -109,7 +109,8 @@ const handleSignin = async (req, res) => {
     //? Creates Secure Cookie with refresh token
     res.cookie("TaskListJwt", refreshToken, {
       httpOnly: false,
-      maxAge: 30* 60 * 1000, //3min
+      sameSite:"None",
+      maxAge: 5* 60 * 1000, //5min
     });
 
     //? return accessToken in res
@@ -141,6 +142,7 @@ const handleSignout = async (req, res) => {
   if (!findUser) {
     res.clearCookie("TaskListJwt", {
       httpOnly: false,
+      sameSite:"None"
     });
     return res.status(403).json({
       message: "Not Authorized",
@@ -154,6 +156,7 @@ const handleSignout = async (req, res) => {
   );
   res.clearCookie("TaskListJwt", {
     httpOnly: false,
+    sameSite: "None",
   });
 
   return res.status(200).json({

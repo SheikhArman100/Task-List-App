@@ -98,7 +98,7 @@ const handleSignin = async (req, res) => {
         role: findUser.role,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "300s" }  //5min
+      { expiresIn: "600s" }  //10min
     );
 
     //?Update the user in the database with the refresh token.
@@ -110,7 +110,8 @@ const handleSignin = async (req, res) => {
     res.cookie("TaskListJwt", refreshToken, {
       httpOnly: false,
       sameSite: "None",
-      maxAge: 5 * 60 * 1000, //5min
+      security:true,
+      maxAge: 10 * 60 * 1000, //10min
     });
 
     //? return accessToken in res
@@ -143,7 +144,7 @@ const handleSignout = async (req, res) => {
     res.clearCookie("TaskListJwt", {
       httpOnly: false,
       sameSite: "None",
-      
+      security: true,
     });
     return res.status(403).json({
       message: "Not Authorized",
@@ -158,7 +159,7 @@ const handleSignout = async (req, res) => {
   res.clearCookie("TaskListJwt", {
     httpOnly: false,
     sameSite: "None",
-    
+    security: true,
   });
 
   return res.status(200).json({

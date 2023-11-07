@@ -110,7 +110,6 @@ const handleSignin = async (req, res) => {
     res.cookie("TaskListJwt", refreshToken, {
       httpOnly: false,
       sameSite: "None",
-      secure: true,
       maxAge: 5 * 60 * 1000, //5min
     });
 
@@ -144,7 +143,7 @@ const handleSignout = async (req, res) => {
     res.clearCookie("TaskListJwt", {
       httpOnly: false,
       sameSite: "None",
-      secure: true,
+      
     });
     return res.status(403).json({
       message: "Not Authorized",
@@ -159,7 +158,7 @@ const handleSignout = async (req, res) => {
   res.clearCookie("TaskListJwt", {
     httpOnly: false,
     sameSite: "None",
-    secure: true,
+    
   });
 
   return res.status(200).json({

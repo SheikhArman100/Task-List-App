@@ -2,9 +2,11 @@
 import { signoutUser } from "@/utils/apiFuntion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const SignoutButton = () => {
+  const router=useRouter()
   const queryClient = useQueryClient();
 
   const signoutMutation = useMutation({
@@ -14,7 +16,7 @@ const SignoutButton = () => {
     },
     onSuccess: (data) => {
       toast.success(data.message);
-      queryClient.invalidateQueries(["check"]);
+      
       router.push("/auth/signin");
     },
   });

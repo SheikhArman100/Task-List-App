@@ -71,8 +71,8 @@ const StatusCheck = ({ isModalOpen }) => {
                   }}
                   className={`radio ${
                     status.label == "In progress"
-                      ? "checked:bg-blue-500"
-                      : "checked:bg-yellow-500"
+                      ? "checked:bg-blue-500 border border-blue-500"
+                      : "checked:bg-yellow-500 border border-yellow-500"
                   }`}
                 />
                 <span className="label-text text-white">{status.label}</span>

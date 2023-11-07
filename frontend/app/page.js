@@ -6,9 +6,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Wait for 3 seconds
+    
     setTimeout(() => {
-      // Navigate to the other page
+      
       router.push("/dashboard");
     }, 1000);
   }, []);

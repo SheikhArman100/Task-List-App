@@ -3,7 +3,7 @@ import { signinSchema } from "@/libs/zodSchema";
 import { useAuthStore } from "@/store/authStore";
 import { signinUser } from "@/utils/apiFuntion";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 const FormSignin = () => {
   const router = useRouter();
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const queryClient=useQueryClient()
 
   //react-hook-form validation
   const {
@@ -33,6 +34,7 @@ const FormSignin = () => {
       setAccessToken(data.accessToken);
       router.push("/dashboard");
       toast.success(data.message);
+      queryClient.invalidateQueries(["check"]);
     },
   });
 

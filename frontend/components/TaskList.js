@@ -24,7 +24,7 @@ const TaskList = ({searchText}) => {
 
 
   return (
-    <section className="py-6 items-center justify-center justify-items-center grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-6   lg:px-[2rem] xl:px-[4rem]">
+    <section className="py-6 items-center justify-center justify-items-center grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-6   lg:px-[2rem] xl:px-[4rem] ">
       {data?.tasks.map((task) => (
         <Task
           key={task._id}

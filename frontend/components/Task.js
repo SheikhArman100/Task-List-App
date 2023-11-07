@@ -87,7 +87,7 @@ const CompletedInput = ({ isCompleted, id }) => {
     <input
       type="checkbox"
       name="radio-1"
-      className="checkbox checkbox-sm"
+      className="checkbox checkbox-sm border-white"
       checked={isCompleted}
       onChange={handleChecked}
     />

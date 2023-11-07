@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         customOrange: "hsl(5,77%,55%)",
         customBlack: "hsl(0,0%,12%)",
-        customGray:"hsl(0,0%,16%)",
+        customGray: "hsl(0,0%,16%)",
       },
     },
   },

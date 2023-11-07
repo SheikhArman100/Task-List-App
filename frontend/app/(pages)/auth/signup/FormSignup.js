@@ -52,8 +52,8 @@ const FormSignup = () => {
       >
         <section className="w-full  grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="form-control w-full max-w-[20rem]">
-            <label className="label">
-              <span className="label-text text-xs">Username</span>
+            <label className="label ">
+              <span className="label-text text-xs text-white">Username</span>
             </label>
             <input
               type="text"
@@ -68,8 +68,8 @@ const FormSignup = () => {
             )}
           </div>
           <div className="form-control w-full max-w-[20rem]">
-            <label className="label">
-              <span className="label-text text-xs">Email</span>
+            <label className="label text-white">
+              <span className="label-text text-xs text-white">Email</span>
             </label>
             <input
               type="email"
@@ -84,8 +84,8 @@ const FormSignup = () => {
             )}
           </div>
           <div className="form-control w-full max-w-[20rem]">
-            <label className="label">
-              <span className="label-text text-xs">Password</span>
+            <label className="label text-white">
+              <span className="label-text text-xs text-white">Password</span>
             </label>
             <input
               type="password"
@@ -100,8 +100,10 @@ const FormSignup = () => {
             )}
           </div>
           <div className="form-control w-full max-w-[20rem]">
-            <label className="label">
-              <span className="label-text text-xs">Confirm Password</span>
+            <label className="label text-white">
+              <span className="label-text text-xs text-white">
+                Confirm Password
+              </span>
             </label>
             <input
               type="password"

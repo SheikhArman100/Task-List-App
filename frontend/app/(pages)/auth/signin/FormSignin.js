@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 
 const FormSignin = () => {
   const router = useRouter();
-  const setAccessToken =useAuthStore((state) => state.setAccessToken);
-  
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
   //react-hook-form validation
   const {
     register,
@@ -30,7 +30,7 @@ const FormSignin = () => {
       toast.error(data.response.data.message);
     },
     onSuccess: async (data) => {
-      setAccessToken(data.accessToken)
+      setAccessToken(data.accessToken);
       router.push("/dashboard");
       toast.success(data.message);
     },
@@ -50,8 +50,8 @@ const FormSignin = () => {
         onSubmit={handleSubmit(handleSignin)}
       >
         <div className="form-control w-full max-w-[20rem]">
-          <label className="label">
-            <span className="label-text">Email</span>
+          <label className="label ">
+            <span className="label-text text-white">Email</span>
           </label>
           <input
             type="email"
@@ -66,8 +66,8 @@ const FormSignin = () => {
           )}
         </div>
         <div className="form-control w-full max-w-[20rem]">
-          <label className="label">
-            <span className="label-text">Password</span>
+          <label className="label ">
+            <span className="label-text text-white">Password</span>
           </label>
           <input
             type="password"

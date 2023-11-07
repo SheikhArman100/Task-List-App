@@ -13,7 +13,7 @@ This is a web-based Task List application built using the MERN (MongoDB, Express
 
 ### Description
 I rely heavily on Todoist app as a part of my daily routine. It has been my primary tool for managing tasks and staying organized.The concept and design of this tasklist website were heavily inspired by Todoist. The app's simplicity and effectiveness motivated me to create a similar experience for myself and others.
-In this app, I covered some advanced topics like JWT Authentication with AccessToken and RefreshToken ,Axios interceptor , caching ,toast notifiaction ,react-hook-form validation with zod , datepicker,search,filtering etc
+In this app, I covered some advanced topics like JWT Authentication with AccessToken and RefreshToken ,Axios interceptor , caching ,toast notification ,react-hook-form validation with zod , datepicker,search with debounce,filtering etc
 
 
 
@@ -113,7 +113,7 @@ __Backend__
 - MongoDB for data storage ad mongoose for schema
 - Password hashing
 - Using JSONWEBTOKEN to create access token and refresh token
-- storing cookie in httpOnly secured stoarage
+- storing cookie in httpOnly secured storage
 - frontend httpOnly cookie access
 - update access token using refresh token
 - Dynamically access user info using middleware by decoding access token
@@ -124,15 +124,15 @@ __Frontend__
 - making sure only verified user can access dashboard
 - Nextjs new server and client components
 - Signup and Signin page with validation using react-hook-form and zod
-- Axios interceptors to send access token with every request to access personal tasks and info .This make sure that coreect person gets correct dat.It also automatically update accesstokenater expiration using refresh token
+- Axios interceptors to send access token with every request to access personal tasks and info .This make sure that coreect person gets correct dat.It also automatically update accesstoken expiration using refresh token
 - create task with validation using react-hook-form and zod. Here i used beautiful DatePicker with customize DatePicker
 - pop-up modal using daisyui
 - show update info and error using react-toastify
 - add to completed task
-- add to imortant task
+- add to important task
 - delete task with confirmation modal
 - filtering tasks
-- search task using backend query perameter
+- search task using backend query parameter
 - used react-query to fetch and mutation suing its caching ability
 - signout feature
 - zustand for state management

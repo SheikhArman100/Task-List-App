@@ -16,10 +16,12 @@ const CookieChecker = ({ children }) => {
 
       return response.data;
     },
-    staleTime:Infinity,
+    refetchOnMount: false,
+    retry:false,
+    staleTime: 10 * 60 * 100,
   });
 
-  if (isLoading|| isFetching) {
+  if (isLoading || isFetching) {
     return (
       <div className="h-screen w-full bg-customBlack flex items-center justify-center">
         <span className="loading loading-spinner text-error" />

@@ -16,7 +16,7 @@ const CookieChecker = ({ children }) => {
 
       return response.data;
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime:Infinity,
   });
 
   if (isLoading|| isFetching) {

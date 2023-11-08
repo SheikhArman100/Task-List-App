@@ -9,19 +9,17 @@ const CookieChecker = ({ children }) => {
   const { isLoading, isFetching, isError, data } = useQuery({
     queryKey: ["check"],
     queryFn: async () => {
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await axiosPublic.get("/auth/updateAT", {
         withCredentials: true,
       });
 
       return response.data;
     },
-    refetchOnMount: false,
-    retry:false,
-    staleTime: 10 * 60 * 100,
+    
   });
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <div className="h-screen w-full bg-customBlack flex items-center justify-center">
         <span className="loading loading-spinner text-error" />

@@ -16,7 +16,9 @@ const CookieChecker = ({ children }) => {
 
       return response.data;
     },
-    
+    refetchOnMount: false,
+    retry:false,
+    staleTime: 10 * 60 * 100,
   });
 
   if (isLoading) {

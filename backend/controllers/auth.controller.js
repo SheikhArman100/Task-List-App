@@ -98,7 +98,7 @@ const handleSignin = async (req, res) => {
         role: findUser.role,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "600s" }  //5min
+      { expiresIn: "1800s" }  //5min
     );
 
     //?Update the user in the database with the refresh token.
@@ -111,7 +111,7 @@ const handleSignin = async (req, res) => {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-      maxAge: 10 * 60 * 1000, //5min
+      maxAge: 30 * 60 * 1000, 
     });
 
     //? return accessToken in res

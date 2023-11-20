@@ -6,23 +6,23 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const SignoutButton = () => {
-  const router=useRouter()
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const signoutMutation = useMutation({
     mutationFn: signoutUser,
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-      
-      router.push("/auth/signin");
-    },
   });
 
   const handleClick = () => {
-    signoutMutation.mutate();
+    signoutMutation.mutate({},{
+      onError: (data) => {
+        toast.error(data.response.data.message);
+      },
+      onSuccess: (data) => {
+        router.push("/auth/signin");
+        toast.success(data.message);
+      },
+    });
   };
   return (
     <button

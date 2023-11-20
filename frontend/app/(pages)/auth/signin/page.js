@@ -23,7 +23,9 @@ const SignIn = () => {
             <line stroke="white" x1="8" x2="8" y1="2" y2="6" />
             <path stroke="white" d="m9 14 2 2 4-4" />
           </svg>
-          <h4 className="text-2xl font-bold text-center">Welcome to TaskList</h4>
+          <h4 className="text-2xl font-bold text-center">
+            Welcome to TaskList
+          </h4>
         </div>
         <div className="relative w-full aspect-square sm:aspect-[1/0.6] md:hidden">
           <Image
@@ -48,6 +50,7 @@ const SignIn = () => {
             src={signInImage}
             priority
             fill
+            sizes="calc(100vw - 64px)"
             className="w- full h-full object-cover"
             alt="sign in"
           />

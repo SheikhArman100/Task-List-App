@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const CookieChecker = ({ children }) => {
   const router = useRouter();
 
-  const { isLoading, isFetching, isError, data } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: ["check"],
     queryFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -19,15 +19,15 @@ const CookieChecker = ({ children }) => {
 
     retry: false,
   });
-
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="h-screen w-full bg-customBlack flex items-center justify-center">
         <span className="loading loading-spinner text-error" />
       </div>
     );
   }
-  if (isError) {
+  if (error) {
+    
     router.push("/auth/signin");
   }
 

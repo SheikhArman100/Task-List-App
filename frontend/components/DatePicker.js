@@ -75,14 +75,14 @@ const DatePicker = ({ isModalOpen }) => {
             )}
           />
         </section>
-        <form method="dialog" className="modal-backdrop">
+        <div method="dialog" className="modal-backdrop">
           <button
             type="button"
             onClick={() => document.getElementById("my_modal_2").close()}
           >
             Close
           </button>
-        </form>
+        </div>
       </dialog>
     </>
   );

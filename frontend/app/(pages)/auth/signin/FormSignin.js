@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 const FormSignin = () => {
   const router = useRouter();
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
 
   //react-hook-form validation
   const {
@@ -27,23 +27,29 @@ const FormSignin = () => {
   //sign in mutation
   const signinMutation = useMutation({
     mutationFn: signinUser,
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
     onSuccess: async (data) => {
       setAccessToken(data.accessToken);
-      router.push("/dashboard");
-      toast.success(data.message);
-      queryClient.invalidateQueries(["check"]);
+      return queryClient.invalidateQueries({ queryKey: ["check"] });
     },
   });
 
   //signin control
   const handleSignin = (data) => {
-    signinMutation.mutate({
-      email: data.email,
-      password: data.password,
-    });
+    signinMutation.mutate(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onError: (data) => {
+          toast.error(data.response.data.message);
+        },
+        onSuccess: (data) => {
+          router.push("/dashboard");
+          toast.success(data.message);
+        },
+      }
+    );
   };
   return (
     <section className="flex flex-col gap-y-8">
@@ -84,7 +90,11 @@ const FormSignin = () => {
           )}
         </div>
         <button className="w-full max-w-[20rem] bg-customOrange py-3 rounded-lg text-base font-semibold mt-4">
-          Sign in
+          {signinMutation.isPending ? (
+            <span className="loading loading-dots loading-sm"></span>
+          ) : (
+            <p>Sign in</p>
+          )}
         </button>
       </form>
       <div className="flex flex-col items-center gap-y-2 max-w-[20rem]">
@@ -95,7 +105,7 @@ const FormSignin = () => {
         </p>
         <p className="text-xs text-gray-300">
           Already have an account ?{" "}
-          <Link href="signup" className="underline font-medium">
+          <Link href="/auth/signup" className="underline font-medium">
             Signup
           </Link>
         </p>

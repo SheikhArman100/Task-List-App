@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Profile = () => {
   const axiosPrivate = useAxiosAuth();
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       const response = await axiosPrivate.get("/user", {
@@ -17,7 +17,7 @@ const Profile = () => {
 
   return (
     <div className="relative w-10 h-10 rounded-full bg-gray-400">
-      {isLoading ? null : (
+      {data ? (
         <Image
           src={data.image}
           fill
@@ -25,7 +25,7 @@ const Profile = () => {
           alt="profile"
           className="w-full h-full rounded-full object-cover"
         />
-      )}
+      ) : null}
     </div>
   );
 };

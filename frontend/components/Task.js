@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format, isAfter, isToday } from "date-fns";
 
 import { Star, Trash2, X } from "lucide-react";
+import { useRef } from "react";
 import { toast } from "react-toastify";
 
 const Task = ({
@@ -68,20 +69,27 @@ const CompletedInput = ({ isCompleted, id }) => {
       });
       return response.data;
     },
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries(["tasks"]);
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 
   const handleChecked = () => {
-    completedMutation.mutate({
-      isCompleted:!isCompleted,
-      id: id,
-    });
+    completedMutation.mutate(
+      {
+        isCompleted: !isCompleted,
+        id: id,
+      },
+      {
+        onError: (data) => {
+          toast.error(data.response.data.message);
+        },
+        onSuccess: (data) => {
+          toast.success(data.message);
+        },
+      }
+    );
   };
   return (
     <input
@@ -104,20 +112,26 @@ const ImportantButton = ({ isImportant, id }) => {
       });
       return response.data;
     },
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries(["tasks"]);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 
   const handleClick = () => {
-    importantMutation.mutate({
-      isImportant: !isImportant,
-      id: id,
-    });
+    importantMutation.mutate(
+      {
+        isImportant: !isImportant,
+        id: id,
+      },
+      {
+        onError: (data) => {
+          toast.error(data.response.data.message);
+        },
+        onSuccess: (data) => {
+          toast.success(data.message);
+        },
+      }
+    );
   };
 
   return (
@@ -132,41 +146,39 @@ const ImportantButton = ({ isImportant, id }) => {
 };
 
 const DeleteButton = ({ id }) => {
+  const deleteModal = useRef();
   const queryClient = useQueryClient();
   const axiosPrivate = useAxiosPrivate();
 
   const deleteMutation = useMutation({
     mutationFn: async (data) => {
-      const response = await axiosPrivate.delete("/task", {
+      const response = await axiosPrivate.delete(`/task?id=${data}`, {
         withCredentials: true,
-        data: {
-          id: data,
-        },
       });
       return response.data;
     },
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-      queryClient.invalidateQueries(["tasks"]);
+
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
   const handleClick = () => {
-    deleteMutation.mutate({
-      id: id,
+    deleteMutation.mutate(id, {
+      onError: (data) => {
+        toast.error(data.response.data.message);
+      },
+      onSuccess: (data) => {
+        toast.success(data.message);
+      },
     });
+    deleteModal?.current.close();
   };
   return (
     <>
-      <button
-        className=""
-        onClick={() => document.getElementById("delete").showModal()}
-      >
+      <button className="" onClick={() => deleteModal?.current.showModal()}>
         <Trash2 size={20} />
       </button>
-      <dialog id="delete" className="modal">
+      <dialog ref={deleteModal} className="modal">
         <div className="modal-box bg-customGray border border-gray-600 w-[20rem] flex flex-col items-center gap-y-6">
           <section className="flex flex-col items-center">
             <div className="p-2 rounded-full border border-red-600">
@@ -180,7 +192,7 @@ const DeleteButton = ({ id }) => {
           <section className="flex gap-x-3">
             <button
               className="py-2 px-4 rounded-lg bg-customBlack"
-              onClick={() => document.getElementById("delete").close()}
+              onClick={() => deleteModal?.current.close()}
             >
               Close
             </button>
@@ -188,7 +200,7 @@ const DeleteButton = ({ id }) => {
               onClick={handleClick}
               className="py-2 px-8 rounded-lg bg-customOrange font-semibold"
             >
-              Yes
+              {deleteMutation.isPending?<span className="loading loading-dots loading-sm"></span>:<p>Yes</p>}
             </button>
           </section>
         </div>

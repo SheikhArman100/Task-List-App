@@ -132,7 +132,7 @@ const handleUpdateImportant = async (req, res) => {
 const handleDeleteTask = async (req, res) => {
   try {
     const userId = req.id;
-    const { id } = req.body;
+    const { id } = req.query;
 
     if (!id) {
       return res.status(400).json({
@@ -140,8 +140,10 @@ const handleDeleteTask = async (req, res) => {
       });
     }
 
+    console.log(id);
+
     await Task.findOneAndDelete({
-      _id: id.id,
+      _id: id,
       userId: userId,
     });
     return res.status(200).json({

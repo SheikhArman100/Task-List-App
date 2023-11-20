@@ -34,25 +34,31 @@ const AddTask = () => {
       });
       return response.data;
     },
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: async (data) => {
-      toast.success(data.message);
+    onSuccess: async () => {
       reset();
-      document.getElementById("addTaskModal").close();
-      setIsModalOpen(false);
-      queryClient.invalidateQueries(["tasks"]);
+      return queryClient.invalidateQueries(["tasks"]);
     },
   });
 
   const handleCreateTask = (data) => {
-    createTaskMutation.mutate({
-      title: data.title,
-      description: data.description,
-      dueDate: data.dueDate,
-      status: data.status,
-    });
+    createTaskMutation.mutate(
+      {
+        title: data.title,
+        description: data.description,
+        dueDate: data.dueDate,
+        status: data.status,
+      },
+      {
+        onError: (data) => {
+          toast.error(data.response.data.message);
+        },
+        onSuccess: (data) => {
+          toast.success(data.message);
+          document.getElementById("addTaskModal").close();
+          setIsModalOpen(false);
+        },
+      }
+    );
   };
 
   return (

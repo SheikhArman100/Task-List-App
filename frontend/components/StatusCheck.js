@@ -56,7 +56,7 @@ const StatusCheck = ({ isModalOpen }) => {
       </button>
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box overflow-hidden w-fit p-2 flex items-center justify-center bg-customBlack border border-gray-500 text-sm">
-          <form className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2">
             {statusOptions.map((status, index) => (
               <fieldset key={index} className="flex items-center gap-x-2 p-2">
                 <input
@@ -86,11 +86,11 @@ const StatusCheck = ({ isModalOpen }) => {
                 />
               </fieldset>
             ))}
-          </form>
+          </div>
         </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
+        <div method="dialog" className="modal-backdrop">
+          <button onClick={()=>document.getElementById("my_modal_3").close()}>close</button>
+        </div>
       </dialog>
     </>
   );

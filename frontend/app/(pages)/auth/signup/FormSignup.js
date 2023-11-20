@@ -1,6 +1,5 @@
 "use client";
 import { signupSchema } from "@/libs/zodSchema";
-import { useAuthStore } from "@/store/authStore";
 import { registerUser } from "@/utils/apiFuntion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +10,6 @@ import { toast } from "react-toastify";
 
 const FormSignup = () => {
   const router = useRouter();
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   //react-hook-form validation
   const {
     register,
@@ -25,24 +23,28 @@ const FormSignup = () => {
   //registration mutation
   const registerMutation = useMutation({
     mutationFn: registerUser,
-    onError: (data) => {
-      toast.error(data.response.data.message);
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-      router.push("/auth/signin");
-    },
   });
 
   //sign up button form control
   const handleSignup = (data) => {
-    registerMutation.mutate({
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      image:
-        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww",
-    });
+    registerMutation.mutate(
+      {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        image:
+          "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fHww",
+      },
+      {
+        onError: (data) => {
+          toast.error(data.response.data.message);
+        },
+        onSuccess: (data) => {
+          toast.success(data.message);
+          router.push("/auth/signin");
+        },
+      }
+    );
   };
   return (
     <section className="flex flex-col items-center gap-y-8">
@@ -134,7 +136,7 @@ const FormSignup = () => {
         </p>
         <p className="text-xs text-gray-300">
           Doesn't have an account ?{" "}
-          <Link href="signin" className="underline font-medium">
+          <Link href="/auth/signin" className="underline font-medium">
             Signin
           </Link>
         </p>
